@@ -11,7 +11,7 @@ import { useState } from "react";
 
 const events=[{
   title:'Cumpleanios del jefe',
-  notes:'Hay que comprar el pastel',
+  notes:'Hay que comprar la torta',
   start: new Date(),
   end: addHours(new Date(),2),
   bgColor:'#fafafa',
@@ -43,8 +43,6 @@ export const CalendarPage = () => {
 
 
   }
-
-
 
   const onDoubleClick=(event)=>{
     console.log({ doubleClick: event })
