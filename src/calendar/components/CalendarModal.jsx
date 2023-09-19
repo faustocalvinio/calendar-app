@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { addHours, differenceInSeconds } from 'date-fns';
 
 import Swal from 'sweetalert2';
@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import DatePicker,{ registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from 'date-fns/locale/es';
+import { useUiStore , useCalendarStore } from '../../hooks'
 
 registerLocale('es',es);
 
@@ -26,7 +27,8 @@ Modal.setAppElement('#root')
 
 export const CalendarModal = () => {
 
-    const [isOpen, setIsOpen] = useState(true);
+    const { isDateModalOpen, closeDateModal  } = useUiStore();
+    const { activeEvent, startSavingEvent } = useCalendarStore();
     const [ formSubmitted, setFormSubmitted ] = useState(false);
 
     const [formValues, setFormValues] = useState({
@@ -47,6 +49,13 @@ export const CalendarModal = () => {
     }
     , [formValues.title,formSubmitted])
 
+    useEffect(() => {
+      if( activeEvent !== null ) {       
+        setFormValues( {...activeEvent} );
+      }
+    } , [activeEvent])
+    
+
     const onInputChanged=({target})=>{
         setFormValues({
             ...formValues,
@@ -62,13 +71,12 @@ export const CalendarModal = () => {
     }
 
 
-    const onCloseModal=()=>{
-        console.log('cerrando modal');
-        setIsOpen(false)
+    const onCloseModal=()=>{          
+        closeDateModal();          
     }
 
 
-    const onSubmitForm=( event )=>{
+    const onSubmitForm = async ( event ) => {
         event.preventDefault();
         setFormSubmitted(true)
         const difference= differenceInSeconds( formValues.end ,  formValues.start );
@@ -78,18 +86,18 @@ export const CalendarModal = () => {
             console.error('Error en Fechas');
             return;
         }
+        if( formValues.title.length <=0 ) return ;      
 
+        await startSavingEvent( formValues );
+        closeDateModal();
+        setFormSubmitted(false);
+    } 
 
-        if( formValues.title.length <=0 ) return ;
-
-        console.log( formValues )
-
-        // console.log(difference)
-    }
+    
 
   return (
     <Modal  
-        isOpen={ isOpen }
+        isOpen={ isDateModalOpen }
         onRequestClose={ onCloseModal }
         style={ customStyles } 
         className="modal"
