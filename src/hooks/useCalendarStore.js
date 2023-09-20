@@ -10,12 +10,8 @@ export const useCalendarStore = () => {
         dispatch( onSetActiveEvent(calendarEvent) );
     };
 
-    const startSavingEvent = async ( calendarEvent ) => {
-        console.log(calendarEvent._id);
-            console.log('startsaving');
-        if ( calendarEvent._id ) {
-            // Edit
-            // console.log(calendarEvent._id);
+    const startSavingEvent = async ( calendarEvent ) => {     
+        if ( calendarEvent._id ) {            
             dispatch( onUpdateEvent({...calendarEvent}) );
         } else {
             dispatch( onAddNewEvent({...calendarEvent,  _id: new Date().getTime() }) );        

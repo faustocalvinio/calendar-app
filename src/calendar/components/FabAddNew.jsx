@@ -7,8 +7,7 @@ export const FabAddNew = () => {
     const { setActiveEvent } = useCalendarStore();
 
     const handleClickNew = () => {
-        setActiveEvent({
-            _id: new Date().getTime(),
+        setActiveEvent({         
             title:'',
             notes:'',
             start: new Date(),
