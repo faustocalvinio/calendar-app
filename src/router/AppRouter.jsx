@@ -3,11 +3,11 @@ import { LoginPage } from "../auth"
 import { CalendarPage } from "../calendar"
 import { useAuthStore } from "../hooks"
 import { useEffect } from "react"
-// import { getEnvVariables } from "../helpers";
+
 
 export const AppRouter = () => {
-  // console.log(getEnvVariables());
-  // const authStatus='not-authenticated'
+
+  
   const { checkAuthToken , status } = useAuthStore();
   
   useEffect(() => {

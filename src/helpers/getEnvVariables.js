@@ -1,9 +1,10 @@
-
-
 export const getEnvVariables = () => {
-    import.meta.env
 
+  const apiURL=import.meta.env.VITE_API_URL;
+  
   return {
-    ...import.meta.env
+      apiURL
   }
 }
+
+export default getEnvVariables
